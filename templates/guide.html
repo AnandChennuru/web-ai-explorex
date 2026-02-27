@@ -1,0 +1,374 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="guide-hero">
+  <div class="guide-hero-eyebrow">📘 Documentation</div>
+  <h1 class="guide-hero-title">ExploreX <span class="text-grad">User Guide</span></h1>
+  <p class="guide-hero-sub">Everything you need to understand how ExploreX works — the systems, the logic, and the philosophy behind each feature.</p>
+</div>
+
+<!-- ── Table of Contents ──────────────────────────────────────── -->
+<div class="guide-toc card">
+  <div class="card-title">📌 Contents</div>
+  <div class="guide-toc-grid">
+    <a href="#philosophy"  class="guide-toc-item">🎯 Core Philosophy</a>
+    <a href="#sessions"    class="guide-toc-item">1️⃣ Focus Sessions</a>
+    <a href="#xp"          class="guide-toc-item">2️⃣ XP System</a>
+    <a href="#levels"      class="guide-toc-item">3️⃣ Level System</a>
+    <a href="#streak"      class="guide-toc-item">4️⃣ Streak System</a>
+    <a href="#momentum"    class="guide-toc-item">5️⃣ Momentum Score</a>
+    <a href="#reflections" class="guide-toc-item">6️⃣ Reflections</a>
+    <a href="#history"     class="guide-toc-item">7️⃣ Session History</a>
+    <a href="#analytics"   class="guide-toc-item">8️⃣ Analytics</a>
+    <a href="#todos"       class="guide-toc-item">9️⃣ Todo List</a>
+    <a href="#vision"      class="guide-toc-item">🏆 Vision</a>
+  </div>
+</div>
+
+<!-- ── Welcome Banner ────────────────────────────────────────── -->
+<div class="guide-welcome card">
+  <div class="guide-welcome-inner">
+    <div class="guide-welcome-icon">⚡</div>
+    <div>
+      <h2 class="guide-welcome-title">Welcome to ExploreX</h2>
+      <p class="guide-welcome-body">ExploreX is a gamified productivity tracking application designed to help users build consistency, discipline and measurable growth through focused work sessions. It transforms time spent working into visible progress.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Core Philosophy ───────────────────────────────────────── -->
+<section id="philosophy" class="guide-section">
+  <div class="guide-section-header">
+    <span class="guide-section-icon">🎯</span>
+    <h2 class="guide-section-title">Core Philosophy</h2>
+  </div>
+  <div class="card">
+    <p class="guide-body-text">Most people fail at productivity not because they lack ambition, but because they lack <strong>visible momentum</strong>. ExploreX solves this by turning every minute of focused work into something tangible.</p>
+    <div class="guide-pillars">
+      <div class="guide-pillar">
+        <div class="guide-pillar-icon">⏱</div>
+        <div class="guide-pillar-label">Track time honestly</div>
+      </div>
+      <div class="guide-pillar">
+        <div class="guide-pillar-icon">🏆</div>
+        <div class="guide-pillar-label">Reward real effort</div>
+      </div>
+      <div class="guide-pillar">
+        <div class="guide-pillar-icon">🔥</div>
+        <div class="guide-pillar-label">Encourage consistency</div>
+      </div>
+      <div class="guide-pillar">
+        <div class="guide-pillar-icon">📊</div>
+        <div class="guide-pillar-label">Visualize progress</div>
+      </div>
+      <div class="guide-pillar">
+        <div class="guide-pillar-icon">🎮</div>
+        <div class="guide-pillar-label">Turn discipline into a game</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Features ──────────────────────────────────────────────── -->
+
+<section id="sessions" class="guide-section">
+  <div class="guide-section-header">
+    <span class="guide-section-num">1</span>
+    <h2 class="guide-section-title">Focus Sessions</h2>
+  </div>
+  <div class="card">
+    <p class="guide-body-text">Start a session whenever you sit down to work. When you end it, ExploreX calculates exactly how long you worked and awards XP accordingly.</p>
+    <div class="guide-rule-box">
+      <div class="guide-rule-row">
+        <span class="guide-rule-label">Duration is counted in</span>
+        <span class="guide-rule-val">Whole minutes only</span>
+      </div>
+      <div class="guide-rule-row">
+        <span class="guide-rule-label">XP awarded</span>
+        <span class="guide-rule-val">= Minutes worked</span>
+      </div>
+      <div class="guide-rule-row">
+        <span class="guide-rule-label">Session &lt; 1 minute</span>
+        <span class="guide-rule-val guide-rule-dim">0 XP (seconds ignored)</span>
+      </div>
+    </div>
+    <p class="guide-why"><span class="guide-why-label">Why?</span> Time is the most honest metric of effort — it cannot be faked.</p>
+  </div>
+</section>
+
+<section id="xp" class="guide-section">
+  <div class="guide-section-header">
+    <span class="guide-section-num">2</span>
+    <h2 class="guide-section-title">XP System — Effort = Reward</h2>
+  </div>
+  <div class="card">
+    <p class="guide-body-text">XP (Experience Points) is the core currency of ExploreX. It is earned purely based on time worked — no bonuses, no shortcuts, no inflation.</p>
+
+    <div class="guide-xp-demo">
+      <div class="guide-xp-row">
+        <span class="guide-xp-mins">2 min</span>
+        <div class="guide-xp-bar-wrap"><div class="guide-xp-bar" style="width:20%"></div></div>
+        <span class="guide-xp-result">= 2 XP</span>
+      </div>
+      <div class="guide-xp-row">
+        <span class="guide-xp-mins">10 min</span>
+        <div class="guide-xp-bar-wrap"><div class="guide-xp-bar" style="width:50%"></div></div>
+        <span class="guide-xp-result">= 10 XP</span>
+      </div>
+      <div class="guide-xp-row">
+        <span class="guide-xp-mins">30 min</span>
+        <div class="guide-xp-bar-wrap"><div class="guide-xp-bar" style="width:80%"></div></div>
+        <span class="guide-xp-result">= 30 XP</span>
+      </div>
+      <div class="guide-xp-row guide-xp-row-dim">
+        <span class="guide-xp-mins">45 sec</span>
+        <div class="guide-xp-bar-wrap"><div class="guide-xp-bar" style="width:0%"></div></div>
+        <span class="guide-xp-result">= 0 XP</span>
+      </div>
+    </div>
+    <p class="guide-why"><span class="guide-why-label">Why?</span> No artificial rewards. No fake gamification. XP represents real effort — nothing more, nothing less.</p>
+  </div>
+</section>
+
+<section id="levels" class="guide-section">
+  <div class="guide-section-header">
+    <span class="guide-section-num">3</span>
+    <h2 class="guide-section-title">Level System</h2>
+  </div>
+  <div class="card">
+    <p class="guide-body-text">Levels are a long-term measure of total accumulated effort. Every 100 XP you earn, your level increases by 1.</p>
+
+    <div class="guide-level-grid">
+      <div class="guide-level-item">
+        <span class="guide-level-num">0</span>
+        <span class="guide-level-range">0 – 99 XP</span>
+      </div>
+      <div class="guide-level-arrow">→</div>
+      <div class="guide-level-item">
+        <span class="guide-level-num">1</span>
+        <span class="guide-level-range">100 – 199 XP</span>
+      </div>
+      <div class="guide-level-arrow">→</div>
+      <div class="guide-level-item">
+        <span class="guide-level-num">2</span>
+        <span class="guide-level-range">200 – 299 XP</span>
+      </div>
+      <div class="guide-level-arrow">→</div>
+      <div class="guide-level-item guide-level-item-grad">
+        <span class="guide-level-num">N</span>
+        <span class="guide-level-range">N×100 XP</span>
+      </div>
+    </div>
+    <p class="guide-why"><span class="guide-why-label">Why?</span> Linear and predictable. You always know exactly what milestone is next and how close you are to it.</p>
+  </div>
+</section>
+
+<section id="streak" class="guide-section">
+  <div class="guide-section-header">
+    <span class="guide-section-num">4</span>
+    <h2 class="guide-section-title">Streak System</h2>
+  </div>
+  <div class="card">
+    <p class="guide-body-text">Streak measures how consistently you show up. It is deliberately flexible — missing a single day will not break your chain.</p>
+
+    <div class="guide-streak-table">
+      <div class="guide-streak-row guide-streak-header">
+        <span>Situation</span>
+        <span>Result</span>
+      </div>
+      <div class="guide-streak-row">
+        <span>✅ Session completed today (after yesterday)</span>
+        <span class="guide-streak-positive">Streak +1</span>
+      </div>
+      <div class="guide-streak-row">
+        <span>✅ Multiple sessions in one day</span>
+        <span class="guide-streak-neutral">No change (already counted)</span>
+      </div>
+      <div class="guide-streak-row">
+        <span>⚠️ Missed exactly 1 day</span>
+        <span class="guide-streak-neutral">Streak stays the same</span>
+      </div>
+      <div class="guide-streak-row">
+        <span>❌ Missed 2 or more days in a row</span>
+        <span class="guide-streak-negative">Streak resets to 1</span>
+      </div>
+      <div class="guide-streak-row">
+        <span>⏱ Session earns 0 XP (&lt;1 min)</span>
+        <span class="guide-streak-negative">Streak not updated</span>
+      </div>
+    </div>
+    <p class="guide-why"><span class="guide-why-label">Why?</span> Too strict → users quit. Too loose → no discipline. One missed day is human. Two missed days is a pattern.</p>
+  </div>
+</section>
+
+<section id="momentum" class="guide-section">
+  <div class="guide-section-header">
+    <span class="guide-section-num">5</span>
+    <h2 class="guide-section-title">Momentum Score</h2>
+  </div>
+  <div class="card">
+    <p class="guide-body-text">Momentum Score is a composite metric that measures your overall productivity behavior — not just how much you work, but how sustainably you work.</p>
+
+    <div class="guide-formula-box">
+      <div class="guide-formula-label">Formula</div>
+      <div class="guide-formula">
+        <span class="guide-formula-part">(Streak × 10)</span>
+        <span class="guide-formula-op">+</span>
+        <span class="guide-formula-part">min(Sessions × 2, 50)</span>
+        <span class="guide-formula-op">+</span>
+        <span class="guide-formula-part">(Total XP × 0.1)</span>
+      </div>
+      <div class="guide-formula-components">
+        <div class="guide-formula-comp">
+          <span class="guide-formula-comp-dot" style="background:#7c3aed"></span>
+          <span>Streak weight — rewards daily consistency</span>
+        </div>
+        <div class="guide-formula-comp">
+          <span class="guide-formula-comp-dot" style="background:#06b6d4"></span>
+          <span>Frequency factor — rewards showing up often (capped at 50)</span>
+        </div>
+        <div class="guide-formula-comp">
+          <span class="guide-formula-comp-dot" style="background:#f59e0b"></span>
+          <span>XP contribution — rewards total effort (10%)</span>
+        </div>
+      </div>
+    </div>
+    <p class="guide-why"><span class="guide-why-label">Why?</span> Productivity is not just about total time. It is about sustained, frequent, consistent action.</p>
+  </div>
+</section>
+
+<section id="reflections" class="guide-section">
+  <div class="guide-section-header">
+    <span class="guide-section-num">6</span>
+    <h2 class="guide-section-title">Reflections</h2>
+  </div>
+  <div class="card">
+    <p class="guide-body-text">After every session, you are invited to write a short reflection. It is optional — you can skip it — but it is one of the most powerful features in ExploreX.</p>
+    <div class="guide-icon-list">
+      <div class="guide-icon-item"><span>🔍</span><span>Improve self-awareness about how you work</span></div>
+      <div class="guide-icon-item"><span>📚</span><span>Track what you are learning over time</span></div>
+      <div class="guide-icon-item"><span>🔄</span><span>Identify patterns in your productivity</span></div>
+      <div class="guide-icon-item"><span>🧠</span><span>Build mental clarity about your progress</span></div>
+    </div>
+    <p class="guide-why"><span class="guide-why-label">Why?</span> Reflection transforms raw time into meaningful growth. Writing it down makes it real.</p>
+  </div>
+</section>
+
+<section id="history" class="guide-section">
+  <div class="guide-section-header">
+    <span class="guide-section-num">7</span>
+    <h2 class="guide-section-title">Session History</h2>
+  </div>
+  <div class="card">
+    <p class="guide-body-text">The History page shows every completed session — date, duration, and a preview of your reflection. Sessions are paginated so it scales as you grow.</p>
+    <div class="guide-icon-list">
+      <div class="guide-icon-item"><span>📅</span><span>View every past session with its date</span></div>
+      <div class="guide-icon-item"><span>⏱</span><span>See exactly how long each session lasted</span></div>
+      <div class="guide-icon-item"><span>📝</span><span>Read back your reflections</span></div>
+      <div class="guide-icon-item"><span>📈</span><span>Witness your accumulating track record</span></div>
+    </div>
+    <p class="guide-why"><span class="guide-why-label">Why?</span> Reviewing your history is not just nostalgia — it reinforces the identity of someone who shows up.</p>
+  </div>
+</section>
+
+<section id="analytics" class="guide-section">
+  <div class="guide-section-header">
+    <span class="guide-section-num">8</span>
+    <h2 class="guide-section-title">Analytics Dashboard</h2>
+  </div>
+  <div class="card">
+    <p class="guide-body-text">The home page includes two live charts that update after every session.</p>
+    <div class="guide-analytics-cards">
+      <div class="guide-analytics-card">
+        <div class="guide-analytics-icon">📊</div>
+        <div class="guide-analytics-name">Daily Minutes — Last 7 Days</div>
+        <div class="guide-analytics-desc">A bar chart showing how many minutes you worked on each day of the past week. Instantly shows your weekly rhythm.</div>
+      </div>
+      <div class="guide-analytics-card">
+        <div class="guide-analytics-icon">📈</div>
+        <div class="guide-analytics-name">XP Growth</div>
+        <div class="guide-analytics-desc">A cumulative line chart of total XP earned across all sessions. Watching this curve rise is one of the most motivating visuals in the app.</div>
+      </div>
+    </div>
+    <p class="guide-why"><span class="guide-why-label">Why?</span> Seeing your progress as a visual creates a feedback loop. The brain responds to upward curves.</p>
+  </div>
+</section>
+
+<section id="todos" class="guide-section">
+  <div class="guide-section-header">
+    <span class="guide-section-num">9</span>
+    <h2 class="guide-section-title">Todo Integration</h2>
+  </div>
+  <div class="card">
+    <p class="guide-body-text">Add quick tasks before or during a session. Your todo list is visible on both the home screen and the active session screen so you always know what you are working on.</p>
+    <div class="guide-icon-list">
+      <div class="guide-icon-item"><span>🎯</span><span>Micro-plan what you want to accomplish this session</span></div>
+      <div class="guide-icon-item"><span>🔗</span><span>Align your focus time with specific goals</span></div>
+      <div class="guide-icon-item"><span>🧘</span><span>Reduce mental distraction by externalising tasks</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Why Different ──────────────────────────────────────────── -->
+<section class="guide-section">
+  <div class="card guide-diff-card">
+    <div class="card-title">🧠 Why ExploreX Is Different</div>
+    <div class="guide-diff-grid">
+      <div class="guide-diff-col guide-diff-other">
+        <div class="guide-diff-col-title">Most productivity apps</div>
+        <div class="guide-diff-item">Track tasks and deadlines</div>
+        <div class="guide-diff-item">Emphasize outcomes</div>
+        <div class="guide-diff-item">Reward completion</div>
+        <div class="guide-diff-item">Ignore the process</div>
+      </div>
+      <div class="guide-diff-vs">VS</div>
+      <div class="guide-diff-col guide-diff-explorex">
+        <div class="guide-diff-col-title">ExploreX</div>
+        <div class="guide-diff-item">Tracks time + consistency + behavior</div>
+        <div class="guide-diff-item">Emphasizes the process</div>
+        <div class="guide-diff-item">Rewards showing up</div>
+        <div class="guide-diff-item">Trains discipline itself</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Vision ─────────────────────────────────────────────────── -->
+<section id="vision" class="guide-section">
+  <div class="card guide-vision-card">
+    <div class="guide-vision-icon">🏆</div>
+    <h2 class="guide-vision-title">Long-Term Vision</h2>
+    <p class="guide-vision-body">ExploreX is not just a timer. It is a <strong>behavioral momentum engine</strong>.</p>
+    <p class="guide-vision-body">The goal is to help you turn daily effort into visible, undeniable growth — one session at a time.</p>
+    <a href="/" class="btn btn-primary" style="margin-top:1.5rem;">⚡ Start a Session</a>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* Animate XP bars on scroll into view */
+const xpBars = document.querySelectorAll('.guide-xp-bar');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.transition = 'width 0.9s cubic-bezier(0.4,0,0.2,1)';
+      e.target.style.width = e.target.dataset.target || e.target.style.width;
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+xpBars.forEach(b => obs.observe(b));
+
+/* Smooth scroll for TOC links */
+document.querySelectorAll('.guide-toc-item').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="reflect-wrap">
+
+  {% if momentum_reset %}
+  <div class="alert alert-recovery">
+    <span class="alert-icon">🔄</span>
+    <div class="alert-body">
+      <strong>Momentum Reset Mode Activated</strong>
+      Your streak reset — but you showed up today. Start just 2 minutes tomorrow to rebuild your chain.
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="card">
+    <div class="card-title">📝 Session Complete</div>
+
+    <div class="reflect-meta">
+      <div class="reflect-meta-item">
+        <span class="reflect-meta-val">{{ active.duration_mins }}</span>
+        <span class="reflect-meta-lbl">minutes</span>
+      </div>
+      <div class="reflect-meta-item">
+        <span class="reflect-meta-val">+{{ active.duration_mins }}</span>
+        <span class="reflect-meta-lbl">XP earned</span>
+      </div>
+      <div class="reflect-meta-item">
+        <span class="reflect-meta-val text-mono" style="font-size:1rem;margin-top:.4rem;">{{ active.date }}</span>
+        <span class="reflect-meta-lbl">date</span>
+      </div>
+    </div>
+
+    <form method="POST" id="reflectForm">
+      <div class="form-group">
+        <label class="form-label" for="reflection">What did you accomplish? Any insights?</label>
+        <textarea
+          class="textarea"
+          id="reflection"
+          name="reflection"
+          placeholder="Describe what you worked on, what clicked, or what you'll tackle next time…"
+          rows="5"
+          autofocus
+        ></textarea>
+      </div>
+
+      <button class="btn btn-primary btn-full" type="submit" id="saveBtn">
+        Save Reflection →
+      </button>
+    </form>
+
+    <form method="POST" style="margin-top:.6rem;">
+      <input type="hidden" name="reflection" value=""/>
+      <button class="btn btn-ghost btn-full btn-sm" type="submit">Skip for now</button>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('reflectForm').addEventListener('submit', function() {
+  const btn = document.getElementById('saveBtn');
+  btn.classList.add('loading');
+  btn.textContent = ' Saving…';
+});
+</script>
+{% endblock %}

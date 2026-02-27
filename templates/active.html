@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-header" style="text-align:center;">
+  <h1 class="text-grad">⚡ Session In Progress</h1>
+  <p>Stay focused. Your momentum is building.</p>
+</div>
+
+<div class="card" style="max-width:520px;margin:0 auto 1.5rem;">
+  <div class="timer-wrap">
+
+    <!-- SVG progress ring -->
+    <svg class="timer-ring-svg" viewBox="0 0 240 240">
+      <defs>
+        <linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="#7c3aed"/>
+          <stop offset="100%" stop-color="#06b6d4"/>
+        </linearGradient>
+      </defs>
+      <circle class="timer-ring-track"    cx="120" cy="120" r="105"/>
+      <circle class="timer-ring-progress" cx="120" cy="120" r="105" id="timerRing"/>
+    </svg>
+
+    <div class="timer-display" id="timerDisplay">00:00</div>
+    <div class="timer-subtitle" id="timerStatus">Timer running…</div>
+
+    <div class="timer-controls">
+      <button class="btn btn-ghost" id="pauseBtn" type="button">⏸ Pause</button>
+      <form method="POST" id="endForm">
+        <button class="btn btn-primary" id="endBtn" type="submit">⏹ End Session</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% if todos %}
+<div class="card" style="max-width:520px;margin:0 auto;">
+  <div class="card-title">📋 Your Tasks</div>
+  {% for todo in todos %}
+  <div class="todo-item">
+    <span class="todo-text">{{ todo.text }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- Momentum nudge popup -->
+<div class="nudge-popup" id="nudgePopup">
+  <div class="nudge-title">🔥 You've built momentum!</div>
+  <div class="nudge-sub">5 minutes done — keep it up for 10 more?</div>
+  <div class="nudge-actions">
+    <button class="btn btn-primary btn-sm" onclick="dismissNudge()">Keep Going 💪</button>
+    <button class="btn btn-ghost btn-sm"   onclick="document.getElementById('endForm').submit()">End Now</button>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+const CIRC = 2 * Math.PI * 105;   // stroke-dasharray for r=105
+
+const timerEl  = document.getElementById('timerDisplay');
+const statusEl = document.getElementById('timerStatus');
+const pauseBtn = document.getElementById('pauseBtn');
+const ringEl   = document.getElementById('timerRing');
+const nudge    = document.getElementById('nudgePopup');
+
+let startedAt = Date.now();
+let elapsed   = 0;      // seconds
+let running   = true;
+let nudgeDone = false;
+let raf;
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function tick() {
+  if (!running) return;
+
+  elapsed = Math.floor((Date.now() - startedAt) / 1000);
+
+  const m = Math.floor(elapsed / 60);
+  const s = elapsed % 60;
+  timerEl.textContent = pad(m) + ':' + pad(s);
+
+  /* Progress ring — one full rotation = 60 min target */
+  const maxSecs = 60 * 60;
+  const progress = Math.min(elapsed / maxSecs, 1);
+  const offset   = CIRC * (1 - progress);
+  ringEl.style.strokeDasharray = CIRC;
+  ringEl.style.strokeDashoffset = offset;
+
+  /* 5-minute nudge */
+  if (elapsed >= 300 && !nudgeDone) {
+    nudgeDone = true;
+    nudge.classList.add('show');
+    statusEl.textContent = '🔥 Momentum unlocked!';
+  }
+
+  raf = setTimeout(tick, 1000);
+}
+
+tick();
+
+/* ── Pause / Resume ─────────────────────────────────────────── */
+let pausedAt = 0;
+pauseBtn.addEventListener('click', () => {
+  if (running) {
+    running   = false;
+    pausedAt  = Date.now();
+    clearTimeout(raf);
+    pauseBtn.textContent = '▶ Resume';
+    statusEl.textContent = 'Paused';
+    timerEl.style.opacity = '0.5';
+  } else {
+    running = true;
+    startedAt += (Date.now() - pausedAt);   // adjust origin
+    pauseBtn.textContent = '⏸ Pause';
+    statusEl.textContent = 'Timer running…';
+    timerEl.style.opacity = '1';
+    tick();
+  }
+});
+
+/* ── Dismiss nudge ──────────────────────────────────────────── */
+function dismissNudge() {
+  nudge.classList.remove('show');
+  nudge.style.display = 'none';
+}
+
+/* ── Loading state on end ───────────────────────────────────── */
+document.getElementById('endForm').addEventListener('submit', function() {
+  clearTimeout(raf);
+  document.getElementById('endBtn').classList.add('loading');
+  document.getElementById('endBtn').textContent = ' Saving…';
+  pauseBtn.disabled = true;
+});
+</script>
+{% endblock %}

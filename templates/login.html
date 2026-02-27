@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ExploreX – Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+</head>
+<body>
+
+<div class="login-wrap">
+
+  <!-- Ambient orbs -->
+  <div class="login-bg">
+    <div class="login-orb login-orb-1"></div>
+    <div class="login-orb login-orb-2"></div>
+  </div>
+
+  <div class="login-card">
+    <div class="login-brand">⚡ ExploreX</div>
+    <p class="login-tagline">Your momentum-powered study companion</p>
+
+    {% if error %}
+    <div class="alert alert-error">
+      <span class="alert-icon">⚠</span>
+      <div class="alert-body">{{ error }}</div>
+    </div>
+    {% endif %}
+
+    <form method="POST" id="loginForm">
+      <div class="form-group">
+        <label class="form-label" for="name">Your Name</label>
+        <input
+          class="input"
+          type="text"
+          id="name"
+          name="name"
+          placeholder="e.g. Alex"
+          autocomplete="username"
+          autofocus
+          required
+        />
+      </div>
+      <button class="btn btn-primary btn-full btn-lg" type="submit" id="loginBtn">
+        Continue →
+      </button>
+    </form>
+
+    <p class="text-dim mt-2" style="text-align:center;font-size:.78rem;">
+      New here? Just enter a name and we'll create your account.
+    </p>
+  </div>
+</div>
+
+<script>
+  /* Apply stored theme */
+  const t = localStorage.getItem('explorex-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+
+  /* Loading state on submit */
+  document.getElementById('loginForm').addEventListener('submit', function() {
+    document.getElementById('loginBtn').classList.add('loading');
+    document.getElementById('loginBtn').textContent = '';
+  });
+</script>
+</body>
+</html>

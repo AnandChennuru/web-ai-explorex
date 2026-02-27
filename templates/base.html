@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ExploreX – {{ title }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+{% if session.user_id %}
+<nav class="nav">
+  <a href="/" class="nav-brand">⚡ExploreX</a>
+  <div class="nav-links">
+    <a href="/"        class="nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
+    <a href="/history" class="nav-link {% if request.path == '/history' %}active{% endif %}">History</a>
+    <a href="/guide"   class="nav-link {% if request.path == '/guide' %}active{% endif %}">📘 Guide</a>
+    <a href="/logout"  class="nav-link">Logout</a>
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle dark/light mode">🌙</button>
+  </div>
+</nav>
+{% endif %}
+
+<div class="container page-enter">
+  {% block content %}{% endblock %}
+</div>
+
+<script>
+  /* ── Theme toggle ────────────────────────────────────────────── */
+  (function() {
+    const stored = localStorage.getItem('explorex-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', stored);
+    const btn = document.getElementById('themeToggle');
+    if (btn) btn.textContent = stored === 'dark' ? '🌙' : '☀️';
+  })();
+
+  const themeBtn = document.getElementById('themeToggle');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('explorex-theme', next);
+      themeBtn.textContent = next === 'dark' ? '🌙' : '☀️';
+    });
+  }
+
+  /* ── Smooth page transitions ─────────────────────────────────── */
+  document.querySelectorAll('a[href]').forEach(link => {
+    if (link.hostname !== location.hostname) return;
+    if (link.getAttribute('href').startsWith('#')) return;
+    link.addEventListener('click', e => {
+      const href = link.getAttribute('href');
+      if (!href || href === '#') return;
+      // let forms handle themselves
+    });
+  });
+</script>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

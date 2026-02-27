@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-header">
+  <h1>Hey, {{ user.name }} 👋</h1>
+  <p>Track your study sessions and build unstoppable momentum.</p>
+</div>
+
+<!-- ── Stat Grid ───────────────────────────────────────────────── -->
+<div class="stat-grid">
+  <div class="stat">
+    <div class="stat-value text-mono">{{ user.total_xp }}</div>
+    <div class="stat-label">⚡ Total XP</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value text-mono">{{ user.level }}</div>
+    <div class="stat-label">🎮 Level</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value text-mono">{{ user.streak }}</div>
+    <div class="stat-label">🔥 Day Streak</div>
+  </div>
+  <div class="stat momentum">
+    <div class="stat-value text-mono">{{ user.momentum_score }}</div>
+    <div class="stat-label">⚡ Momentum Score</div>
+  </div>
+</div>
+
+<!-- ── Badges ─────────────────────────────────────────────────── -->
+<div class="card">
+  <div class="card-title">🏅 Achievements</div>
+
+  {% if user.badges %}
+  <div class="badge-row">
+    {% for b in user.badges %}
+    <span class="badge">{{ b.icon }} {{ b.name }}</span>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-muted" style="font-size:.9rem;">Complete sessions to earn badges!</p>
+  {% endif %}
+
+  {% if user.next_badge %}
+  <div class="badge-next mt-1">
+    <span>{{ user.next_badge.icon }} {{ user.next_badge.name }}</span>
+    <div class="badge-progress">
+      <div
+        class="badge-progress-fill"
+        id="badgeFill"
+        style="width:0"
+        data-target="{{ [((user.total_xp / user.next_badge.xp) * 100)|int, 100]|min }}"
+      ></div>
+    </div>
+    <span class="text-mono" style="font-size:.78rem;white-space:nowrap;">{{ user.next_badge.remaining }} XP left</span>
+  </div>
+  {% endif %}
+</div>
+
+<!-- ── Start Session ──────────────────────────────────────────── -->
+<div class="card start-card">
+  <h2>Ready to build momentum?</h2>
+  <p>Start a focused session and watch your streak grow.</p>
+  <form method="POST" id="startForm">
+    <input type="hidden" name="action" value="start"/>
+    <button class="btn btn-primary btn-lg" type="submit" id="startBtn">
+      ▶ Start Session
+    </button>
+  </form>
+</div>
+
+<!-- ── Charts ─────────────────────────────────────────────────── -->
+<div class="charts-grid">
+  <div class="card">
+    <div class="card-title">📊 Daily Minutes — Last 7 Days</div>
+    <canvas id="weekChart" height="170"></canvas>
+  </div>
+  <div class="card">
+    <div class="card-title">📈 XP Growth</div>
+    <canvas id="xpChart" height="170"></canvas>
+  </div>
+</div>
+
+<!-- ── Streak Visualization ───────────────────────────────────── -->
+<div class="card">
+  <div class="card-title">🗓 Weekly Activity</div>
+
+  <div class="streak-meter-wrap">
+    <!-- Circular ring meter -->
+    <div class="streak-ring" id="streakRingWrap">
+      <svg viewBox="0 0 90 90" width="90" height="90">
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stop-color="#7c3aed"/>
+            <stop offset="100%" stop-color="#06b6d4"/>
+          </linearGradient>
+        </defs>
+        <circle class="streak-ring-bg"   cx="45" cy="45" r="36"/>
+        <circle class="streak-ring-fill" cx="45" cy="45" r="36"
+                id="streakRingFill"
+                data-streak="{{ user.streak }}"
+                data-max="30"/>
+      </svg>
+      <div class="streak-ring-text">
+        <span class="streak-ring-num">{{ user.streak }}</span>
+        <span class="streak-ring-unit">days</span>
+      </div>
+    </div>
+
+    <!-- Heatmap bars -->
+    <div class="streak-heatmap" style="flex:1">
+      {% for i in range(6, -1, -1) %}
+      <div class="streak-day">
+        <div class="streak-bar-wrap">
+          <div
+            class="streak-bar-fill {% if week_minutes[6-i] > 0 %}active{% else %}inactive{% endif %}"
+            data-mins="{{ week_minutes[6-i] }}"
+            data-max="{{ week_minutes | max if week_minutes | max > 0 else 1 }}"
+            style="height:0"
+          ></div>
+        </div>
+        <span class="streak-label">{{ week_labels[6-i] }}</span>
+        <span class="streak-mins">
+          {% if week_minutes[6-i] > 0 %}{{ week_minutes[6-i] }}m{% endif %}
+        </span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- ── Todos + Reflections ────────────────────────────────────── -->
+<div class="two-col">
+
+  <div class="card">
+    <div class="card-title">✅ To-Do List</div>
+    <form method="POST" id="todoForm">
+      <input type="hidden" name="action" value="add_todo"/>
+      <div class="input-row mb-2">
+        <input class="input" type="text" name="text" placeholder="Add a task…"/>
+        <button class="btn btn-primary btn-sm" type="submit">Add</button>
+      </div>
+    </form>
+
+    {% for todo in todos %}
+    <div class="todo-item">
+      <span class="todo-text">{{ todo.text }}</span>
+      <form method="POST">
+        <input type="hidden" name="action" value="delete_todo"/>
+        <input type="hidden" name="id" value="{{ todo.id }}"/>
+        <button class="btn btn-danger btn-sm" type="submit">✕</button>
+      </form>
+    </div>
+    {% else %}
+    <div class="todo-empty">No tasks yet — add one above.</div>
+    {% endfor %}
+  </div>
+
+  <div class="card">
+    <div class="card-title">📝 Recent Reflections</div>
+    {% for r in recent_reflections %}
+    <div class="reflection-item">
+      <div class="reflection-meta">{{ r.date }} · {{ r.duration_mins }}min</div>
+      <div class="reflection-text">
+        {{ r.reflection[:120] }}{% if r.reflection|length > 120 %}…{% endif %}
+      </div>
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">💭</div>
+      <p>Complete a session and write your first reflection.</p>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* ── Badge progress bar animate ─────────────────────────────── */
+const fill = document.getElementById('badgeFill');
+if (fill) {
+  setTimeout(() => {
+    fill.style.width = fill.dataset.target + '%';
+  }, 400);
+}
+
+/* ── Start session loading state ─────────────────────────────── */
+document.getElementById('startForm').addEventListener('submit', function() {
+  const btn = document.getElementById('startBtn');
+  btn.classList.add('loading');
+  btn.textContent = ' Starting…';
+});
+
+/* ── Chart.js helpers ────────────────────────────────────────── */
+const isDark = () => document.documentElement.getAttribute('data-theme') !== 'light';
+const gridColor  = () => isDark() ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
+const tickColor  = () => isDark() ? '#6b7280' : '#9090b0';
+
+function chartDefaults() {
+  return {
+    responsive: true,
+    animation: { duration: 900, easing: 'easeOutQuart' },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: isDark() ? '#1a1a2e' : '#ffffff',
+        titleColor: isDark() ? '#e8e8f4' : '#1a1a2e',
+        bodyColor:  isDark() ? '#6b7280'  : '#5b5b7a',
+        borderColor: isDark() ? '#1e1e3a' : '#d4d4e8',
+        borderWidth: 1,
+        padding: 10,
+        cornerRadius: 8,
+        displayColors: false,
+      }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { color: tickColor() }, grid: { color: gridColor() }, border: { display: false } },
+      x: { ticks: { color: tickColor() }, grid: { display: false }, border: { display: false } }
+    }
+  };
+}
+
+/* Gradient helper */
+function makeGradient(ctx, color1, color2) {
+  const g = ctx.createLinearGradient(0, 0, 0, 200);
+  g.addColorStop(0, color1);
+  g.addColorStop(1, color2);
+  return g;
+}
+
+/* Week chart */
+const weekCtx = document.getElementById('weekChart').getContext('2d');
+const weekGrad = makeGradient(weekCtx, 'rgba(124,58,237,0.8)', 'rgba(6,182,212,0.2)');
+new Chart(weekCtx, {
+  type: 'bar',
+  data: {
+    labels: {{ week_labels|tojson }},
+    datasets: [{
+      label: 'Minutes',
+      data:  {{ week_minutes|tojson }},
+      backgroundColor: weekGrad,
+      borderColor: '#7c3aed',
+      borderWidth: 1,
+      borderRadius: 6,
+      borderSkipped: false,
+    }]
+  },
+  options: chartDefaults()
+});
+
+/* XP chart */
+const xpCtx = document.getElementById('xpChart').getContext('2d');
+const xpGrad = makeGradient(xpCtx, 'rgba(6,182,212,0.35)', 'rgba(6,182,212,0.0)');
+new Chart(xpCtx, {
+  type: 'line',
+  data: {
+    labels: {{ xp_labels|tojson }},
+    datasets: [{
+      label: 'XP',
+      data:  {{ cumulative_xp|tojson }},
+      borderColor: '#06b6d4',
+      backgroundColor: xpGrad,
+      fill: true,
+      tension: 0.45,
+      pointRadius: 4,
+      pointBackgroundColor: '#06b6d4',
+      pointBorderColor: isDark() ? '#0e0e1c' : '#fff',
+      pointBorderWidth: 2,
+    }]
+  },
+  options: chartDefaults()
+});
+
+/* ── Streak heatmap bars animate ─────────────────────────────── */
+const maxMins = Math.max({{ week_minutes|join(',') }}, 1);
+document.querySelectorAll('.streak-bar-fill').forEach(el => {
+  const mins = parseInt(el.dataset.mins) || 0;
+  const pct  = Math.max((mins / maxMins) * 100, mins > 0 ? 12 : 0);
+  setTimeout(() => { el.style.height = pct + '%'; }, 200);
+});
+
+/* ── Circular streak ring animate ────────────────────────────── */
+const ring = document.getElementById('streakRingFill');
+if (ring) {
+  const streak = parseInt(ring.dataset.streak) || 0;
+  const max    = parseInt(ring.dataset.max)    || 30;
+  const circ   = 226; // 2π × 36
+  const offset = circ - Math.min((streak / max), 1) * circ;
+  setTimeout(() => { ring.style.strokeDashoffset = offset; }, 300);
+}
+</script>
+{% endblock %}
